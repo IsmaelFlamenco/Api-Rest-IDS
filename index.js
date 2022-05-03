@@ -6,6 +6,15 @@ const text = require("body-parser/lib/types/text");
 const path = require("path") //Libreria de node para rutas
 const app = express();
 
+// MIDDLEWARES
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static(__dirname+'/public'));
+app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
+
+app.listen(3000, ()=> {
+    console.log("El servidor está escuchando en el puerto 3000")
+})
 
 sgMail.setApiKey("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")
 
@@ -47,17 +56,6 @@ conectar.connect(function(err) {
     }else{
         console.log("Conexión Exitosa");
     }
-})
-
-
-// MIDDLEWARES
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static(__dirname+'/public'));
-app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
-
-app.listen(3000, ()=> {
-    console.log("El servidor está escuchando en el puerto 3000")
 })
 
 //Objeto de respuesta que vamos a devolver
@@ -120,7 +118,7 @@ let usuario = [
  * 
  */
 //Seleccionando los usuarios
-app.get("/usuario",function(req, res) {
+app.get("/usuarios",function(req, res) {
 
     let query = 'SELECT * FROM usuarios';
 
@@ -134,6 +132,7 @@ app.get("/usuario",function(req, res) {
             respuesta.data = rows;
         }
         res.json(respuesta);
+        res.send(respuesta);
     });
 
     // usuario.nombre = "Ismael";
