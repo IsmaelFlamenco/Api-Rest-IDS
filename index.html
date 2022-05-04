@@ -5,11 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>CRUD con NodeJS - Ismael Flamenco</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="style.css">
+<!-- Javascript -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+	function llenarTabla(){
+		fetch("http://localhost:3000/usuario")
+		.then((respuesta)=>respuesta.json())
+		.then((usuario)=>{
+			let tablaUsers = document.querySelector("#tablaUsuarios tbody");
+			let i = 1;
+			for (const itemUsuario of usuario.data) {
+				let tr = 
+					"<tr> <td class='id'>" + 
+						itemUsuario.idUsuario + 
+					'</td><td class="nombre">' + 
+						itemUsuario.nombre + 
+					'</td><td class="apellido">' + 
+						itemUsuario.apellido + 
+					'</td><td class="edad">' + 
+						itemUsuario.edad + 
+					"</td><td>" +
+							'<a href="#editEmployeeModal" class="edit editButton" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>'+
+							'<a href="#deleteEmployeeModal" class="delete deleteButton" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>' +
+					"</td></tr>"
+				tablaUsers.innerHTML += tr;
+				i+=1;
+			}
+		})
+	}
+	llenarTabla();
+</script>
 
 </head>
 <body>
@@ -34,15 +70,13 @@
 						<h2>Administración de <b>Usuarios</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Agregar Nuevo Usuario</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Eliminar</span></a>						
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Agregar Nuevo Usuario</span></a>				
 					</div>
 				</div>
 			</div>
 			<table class="table table-striped table-hover" id="tablaUsuarios">
 				<thead>
 					<tr>
-						<th></th>
 						<th>ID</th>
 						<th>Nombre</th>
 						<th>Apellido</th>
@@ -51,36 +85,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
-						<td>2</td>
-						<td>Ismael</td>
-						<td>Flamenco</td>
-						<td>21</td>
-						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						</td>
-					</tr> 
 				</tbody>
 			</table>
-			<div class="clearfix">
-				<div class="hint-text">Mostrando <b>1</b> de <b>10</b> registros</div>
-				<ul class="pagination">
-					<li class="page-item disabled"><a href="#">Anterior</a></li>
-					<li class="page-item active"><a href="#" class="page-link">1</a></li>
-					<li class="page-item"><a href="#" class="page-link">2</a></li>
-					<li class="page-item"><a href="#" class="page-link">3</a></li>
-					<li class="page-item"><a href="#" class="page-link">4</a></li>
-					<li class="page-item"><a href="#" class="page-link">5</a></li>
-					<li class="page-item"><a href="#" class="page-link">Siguiente</a></li>
-				</ul>
-			</div>
 		</div>
 	</div>        
 </div>
@@ -119,7 +125,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="modificarUsuario" method="POST">
+			<form action="modificarUsuario" name="modificarUsuario" method="POST">
 				<div class="modal-header">						
 					<h4 class="modal-title">Editar Usuario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -127,19 +133,19 @@
 				<div class="modal-body">					
 					<div class="form-group">
 						<label>ID</label>
-						<input type="number" class="form-control" name="indice" required>
+						<input type="number" class="form-control" name="indiceM" required>
 					</div>
 					<div class="form-group">
 						<label>Nombre</label>
-						<input type="text" class="form-control" name="nombre" required>
+						<input type="text" class="form-control" name="nombreM" required>
 					</div>
 					<div class="form-group">
 						<label>Apellido</label>
-						<input type="text" class="form-control" name="apellido" required>
+						<input type="text" class="form-control" name="apellidoM" required>
 					</div>
 					<div class="form-group">
 						<label>Edad</label>
-						<input type="number" class="form-control" name="edad" required>
+						<input type="number" class="form-control" name="edadM" required>
 					</div>					
 				</div>
 				<div class="modal-footer">
@@ -150,17 +156,41 @@
 		</div>
 	</div>
 </div>
+
+<!-- Add data into modal -->
+<script>
+	$(function () {
+		// ON SELECTING ROW
+		$(".editButton").click(function () {
+			//FINDING ELEMENTS OF ROWS AND STORING THEM IN VARIABLES
+				var id =
+			parseInt($(this).parents("tr").find(".id").text());
+				var nombre =
+			$(this).parents("tr").find(".nombre").text();
+				var apellido =
+			$(this).parents("tr").find(".apellido").text();
+				var edad = 
+			parseInt($(this).parents("tr").find(".edad").text());
+			document.forms['modificarUsuario']['indiceM'].value = id;
+			document.forms['modificarUsuario']['nombreM'].value = nombre;
+			document.forms['modificarUsuario']['apellidoM'].value = apellido;
+			document.forms['modificarUsuario']['edadM'].value = edad;
+		});
+	});
+</script>
+
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="eliminarUsuario" method="POST">
+			<form action="eliminarUsuario" name="eliminarUsuario" method="POST">
 				<div class="modal-header">						
 					<h4 class="modal-title">Eliminar Usuario</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<p>Estás seguro que deseas eliminar a este usuario?</p>
+					<input type="number" class="form-control" name="indiceD" hidden>
 					<p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
 				</div>
 				<div class="modal-footer">
@@ -171,33 +201,22 @@
 		</div>
 	</div>
 </div>
+<!-- Add data into delete modal -->
 <script>
-    $(document).ready(function(){
-        // Activate tooltip
-        $('[data-toggle="tooltip"]').tooltip();
-        
-        // Select/Deselect checkboxes
-        var checkbox = $('table tbody input[type="checkbox"]');
-        $("#selectAll").click(function(){
-            if(this.checked){
-                checkbox.each(function(){
-                    this.checked = true;                        
-                });
-            } else{
-                checkbox.each(function(){
-                    this.checked = false;                        
-                });
-            } 
-        });
-        checkbox.click(function(){
-            if(!this.checked){
-                $("#selectAll").prop("checked", false);
-            }
-        });
-    });
+	$(function () {
+		// ON SELECTING ROW
+		$(".deleteButton").click(function () {
+			//FINDING ELEMENTS OF ROWS AND STORING THEM IN VARIABLES
+				var id =
+			parseInt($(this).parents("tr").find(".id").text());
+			document.forms['eliminarUsuario']['indiceD'].value = id;
+		});
+	});
 </script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+		$('#tablaUsuarios').DataTable();
+	} );
+</script>
 </body>
 </html>

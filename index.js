@@ -2,15 +2,8 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const mysql = require("mysql");
 const sgMail = require ("@sendgrid/mail");
-const text = require("body-parser/lib/types/text");
 const path = require("path") //Libreria de node para rutas
 const app = express();
-
-// MIDDLEWARES
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static(__dirname+'/public'));
-app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
 
 app.listen(3000, ()=> {
     console.log("El servidor está escuchando en el puerto 3000")
@@ -60,6 +53,13 @@ conectar.connect(function(err) {
 
 //Objeto de respuesta que vamos a devolver
 let respuesta = { status: 200, mensaje: '', data: {} }
+
+// MIDDLEWARES
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static(__dirname+'/public'));
+app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
+
 
 app.get("/",function(req, res) {
     res.sendFile(path.resolve(__dirname, 'index.html'));
@@ -118,7 +118,7 @@ let usuario = [
  * 
  */
 //Seleccionando los usuarios
-app.get("/usuarios",function(req, res) {
+app.get("/usuario",function(req, res) {
 
     let query = 'SELECT * FROM usuarios';
 
@@ -132,7 +132,6 @@ app.get("/usuarios",function(req, res) {
             respuesta.data = rows;
         }
         res.json(respuesta);
-        res.send(respuesta);
     });
 
     // usuario.nombre = "Ismael";
@@ -229,8 +228,8 @@ app.post("/insertarUsuario",function(req, res) {
  */
 //Modificar con el método POST el usuario
 app.post("/modificarUsuario",function(req, res) {
-    let { nombre, apellido, edad, indice } = req.body
-    let query = "UPDATE usuarios SET nombre='"+nombre+"',apellido='"+apellido+"',edad='"+edad+"' WHERE idUsuario='"+indice+"'";
+    let { nombreM, apellidoM, edadM, indiceM } = req.body
+    let query = "UPDATE usuarios SET nombre='"+nombreM+"',apellido='"+apellidoM+"',edad='"+edadM+"' WHERE idUsuario='"+indiceM+"'";
 
     conectar.query(query, function(err, rows) {
         if (err) {
@@ -244,7 +243,6 @@ app.post("/modificarUsuario",function(req, res) {
         console.log(respuesta)
         res.redirect('/');
     });
-    
     // let { nombre, apellido, indice } = req.body
 
     // usuario[indice].nombre = nombre;
@@ -283,9 +281,9 @@ app.post("/modificarUsuario",function(req, res) {
 //Eliminando con el método POST un usuario
 app.post("/eliminarUsuario",function(req, res) {
     
-    let { indice } = req.body
+    let { indiceD } = req.body
 
-    let query = "DELETE FROM usuarios WHERE idUsuario="+indice+";";
+    let query = "DELETE FROM usuarios WHERE idUsuario='"+indiceD+"'";
 
     conectar.query(query, function(err, rows) {
         if (err) {
@@ -299,7 +297,6 @@ app.post("/eliminarUsuario",function(req, res) {
         console.log(respuesta)
         res.redirect('/');
     });
-    
     // let { indice } = req.body
     // usuario.splice(indice,1);
 
