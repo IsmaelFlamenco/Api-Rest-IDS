@@ -38,7 +38,7 @@ const conectar = mysql.createConnection({
     host:'localhost',
     port:'3306',
     user:'isma',
-    password:'IiSsMmAa12910',
+    password:'f(pu!+KjdPyE~D6!',
     database:'prueba'
 });
 
@@ -357,13 +357,11 @@ app.post("/EnviarCorreo", function(req, res){
     sgMail
         .send(mensaje)
         .then(() => {
-            console.log('Email sent')
-            res.send('Correo enviado')
+            console.log('Email sent');
+            res.redirect('/');
+            // res.send('Correo enviado')
         })
         .catch((error) => {
             console.error(error)
         })
-
-       
-
 })
