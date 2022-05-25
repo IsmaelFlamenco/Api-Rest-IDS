@@ -42,16 +42,16 @@
 				let edad = parseInt($(this).parents("tr").find(".edad").text());
 
 				//Pasar los datos de la tabla al modal
-				document.forms['modificarUsuario']['indiceM'].value = id;
-				document.forms['modificarUsuario']['nombreM'].value = nombre;
-				document.forms['modificarUsuario']['apellidoM'].value = apellido;
-				document.forms['modificarUsuario']['edadM'].value = edad;
+				document.forms['modificarUsuario']['indice'].value = id;
+				document.forms['modificarUsuario']['nombre'].value = nombre;
+				document.forms['modificarUsuario']['apellido'].value = apellido;
+				document.forms['modificarUsuario']['edad'].value = edad;
 			});
 
 			$(".deleteButton").click(function () {
 				//FINDING ELEMENTS OF ROWS AND STORING THEM IN VARIABLES
 				let id = parseInt($(this).parents("tr").find(".id").text());
-				document.forms['eliminarUsuario']['indiceD'].value = id;
+				document.forms['eliminarUsuario']['indice'].value = id;
 			});
 		})
 	})
@@ -179,19 +179,19 @@
 					<div class="modal-body">					
 						<div class="form-group">
 							<label>ID</label>
-							<input type="number" class="form-control" name="indiceM" required>
+							<input type="number" class="form-control" name="indice" required>
 						</div>
 						<div class="form-group">
 							<label>Nombre</label>
-							<input type="text" class="form-control" name="nombreM" required>
+							<input type="text" class="form-control" name="nombre" required>
 						</div>
 						<div class="form-group">
 							<label>Apellido</label>
-							<input type="text" class="form-control" name="apellidoM" required>
+							<input type="text" class="form-control" name="apellido" required>
 						</div>
 						<div class="form-group">
 							<label>Edad</label>
-							<input type="number" class="form-control" name="edadM" required>
+							<input type="number" class="form-control" name="edad" required>
 						</div>					
 					</div>
 					<div class="modal-footer">
@@ -214,7 +214,7 @@
 					</div>
 					<div class="modal-body">					
 						<p>Estás seguro que deseas eliminar a este usuario?</p>
-						<input type="number" class="form-control" name="indiceD" hidden>
+						<input type="number" class="form-control" name="indice" hidden>
 						<p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
 					</div>
 					<div class="modal-footer">

@@ -98,6 +98,29 @@ let usuario = [
  *              nombre: Ismael
  *              apellido: Flamenco
  *              edad: 21
+ *      Email:
+ *          type: object
+ *          properties:
+ *              to:
+ *                  type: string
+ *                  description: Receptor del mensaje (A quién va dirigido)
+ *              from:
+ *                  type: string
+ *                  description: Emisor del mensaje (Quién envía el mensaje)
+ *              subject:
+ *                  type: string
+ *                  description: Asunto
+ *              text:
+ *                  type: string
+ *                  description: Contenido del Mensaje
+ *          required:
+ *              - to
+ *              - from
+ *          example:
+ *              to: ismael.flamenco@ulv.edu.mx
+ *              from: abigail.diaz@ulv.edu.mx
+ *              subject: Prueba de Mensaje
+ *              text: Esta es una prueba de un mensaje enviado desde sendgrid
  */
 
 /**
@@ -228,8 +251,8 @@ app.post("/insertarUsuario",function(req, res) {
  */
 //Modificar con el método POST el usuario
 app.post("/modificarUsuario",function(req, res) {
-    let { nombreM, apellidoM, edadM, indiceM } = req.body
-    let query = "UPDATE usuarios SET nombre='"+nombreM+"',apellido='"+apellidoM+"',edad='"+edadM+"' WHERE idUsuario='"+indiceM+"'";
+    let { nombre, apellido, edad, indice } = req.body
+    let query = "UPDATE usuarios SET nombre='"+nombre+"',apellido='"+apellido+"',edad='"+edad+"' WHERE idUsuario='"+indice+"'";
 
     conectar.query(query, function(err, rows) {
         if (err) {
@@ -281,9 +304,9 @@ app.post("/modificarUsuario",function(req, res) {
 //Eliminando con el método POST un usuario
 app.post("/eliminarUsuario",function(req, res) {
     
-    let { indiceD } = req.body
+    let { indice } = req.body
 
-    let query = "DELETE FROM usuarios WHERE idUsuario='"+indiceD+"'";
+    let query = "DELETE FROM usuarios WHERE idUsuario='"+indice+"'";
 
     conectar.query(query, function(err, rows) {
         if (err) {
