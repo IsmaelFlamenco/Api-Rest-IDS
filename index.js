@@ -9,6 +9,7 @@ app.listen(3000, ()=> {
     console.log("El servidor está escuchando en el puerto 3000")
 })
 
+//API Key para el envio de correos
 sgMail.setApiKey("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")
 
 // SWAGGER
@@ -35,6 +36,7 @@ const swaggerSpec = {
 
 // MySQL Connection
 const conectar = mysql.createConnection({
+    //Credenciales de conexion
     host:'localhost',
     port:'3306',
     user:'isma',
